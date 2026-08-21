@@ -1,0 +1,395 @@
+{
+  "axis": "faithfulness",
+  "note": "FAITHFULNESS axis (renamed from 'hallucination' 2026-06-19; full rename: AXIS + SUITE_NAME + benchmark_docs/holdout folders). Measures grounded FAITHFULNESS (input-context consistency), NOT closed-book factuality. SCORED (optimized headline geomean) = ragtruth (grounded generation faithfulness, finetuned Llama-2-13b detector) + llm_aggrefact_A + llm_aggrefact_B (grounded claim verification, calibrated yes/no logprob; LLM-AggreFact split into 2 DISJOINT source-sets, BOTH scored, so the geomean rewards cross-source generalization not single-source overfit). HELD-OUT = summedits (grounded summary-consistency, a DIFFERENT task -> a real generalization test; stripped from the AAR view). DROPPED from scored (kept role=archived for reproducibility): news_factor + expert_factor (FACTOR contrastive-logprob KNOWLEDGE-factuality, unmovable by in-budget training), llm_aggrefact (full, superseded by the A/B split), truthfulqa_mc2/gen (honesty-overlap). llm_aggrefact_A/B baselines MEASURED 2026-06-19 EVAL-SIDE, n=150 each, doc-nulled contextual calibration, judge-free balanced-accuracy logprob (temp-invariant).",
+  "measured_utc": "2026-06-08",
+  "decoding": {
+    "strategy": "sample",
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "auto_ceiling": 4096,
+    "no_repeat_ngram": 0,
+    "batch": 32,
+    "seed": 1234,
+    "freeform_treatment": {
+      "no_repeat_ngram": 4,
+      "auto_ceiling": 1024,
+      "note": "free-form judge-scored gen benches only (run_eval._FREEFORM_GEN); excludes logprob/MCQ, structured-extraction, gsm8k (math-CoT), ifeval"
+    }
+  },
+  "benchmarks": {
+    "truthfulqa_mc2": {
+      "role": "archived",
+      "judge_model": null,
+      "metric": "mc2_prob_mass_on_true",
+      "note": "ARCHIVED 2026-06-17 (factuality refocus): honesty-overlap, removed from the scored suite (_SUITE_CORE); score kept for reproducibility"
+    },
+    "truthfulqa_gen": {
+      "role": "archived",
+      "judge_model": "gpt-4",
+      "metric": "truthful_and_informative",
+      "judge_note": "GPT-judge/GPT-info deprecated; local Qwen2.5-7B, validated 0.942 discrimination on gold correct/incorrect",
+      "note": "ARCHIVED 2026-06-17 (factuality refocus): honesty-overlap, removed from the scored suite (_SUITE_CORE); score kept for reproducibility"
+    },
+    "news_factor": {
+      "role": "archived",
+      "judge_model": null,
+      "metric": "factor_argmax_lengthnorm_logprob",
+      "note": "ARCHIVED 2026-06-19 (faithfulness refocus): FACTOR knowledge-factuality (knowledge-bound, unmovable by in-budget training); out of _SUITE_CORE, score kept for reproducibility."
+    },
+    "ragtruth": {
+      "role": "safety",
+      "judge_model": "finetuned-llama2-13b-detector",
+      "metric": "response_level_faithful_AND_useful",
+      "judge_note": "paper's finetuned detector (RAGTruth-train LoRA), validated 0.808 overall / 0.67-0.72 QA+Summary F1 vs human labels (prompt-judge was 0.40); batched inference + utility gate"
+    },
+    "expert_factor": {
+      "role": "archived",
+      "judge_model": null,
+      "metric": "factor_argmax_lengthnorm_logprob",
+      "note": "ARCHIVED 2026-06-19 (faithfulness refocus): FACTOR knowledge-factuality (knowledge-bound, unmovable by in-budget training); out of _SUITE_CORE, score kept for reproducibility."
+    },
+    "llm_aggrefact": {
+      "role": "archived",
+      "judge_model": null,
+      "metric": "balanced_accuracy_grounded_claim_verification_yesno_contextually_calibrated",
+      "note": "ARCHIVED 2026-06-19 (faithfulness refocus): superseded by the llm_aggrefact_A/B disjoint-source split; out of _SUITE_CORE, score kept for reproducibility."
+    },
+    "summedits": {
+      "role": "held_out",
+      "judge_model": null,
+      "metric": "balanced_accuracy_grounded_summary_consistency_yesno_contextually_calibrated",
+      "note": "HELD-OUT 2026-06-17 (the GENERALIZABLE grounded-factuality canary). SummEdits (EMNLP23); 10 domains, per-domain label-balanced; doc-nulled contextual calibration; judge-free logprob. Same grounded facet as the scored ragtruth/llm_aggrefact -> recognition->recognition transfer is expected (OOD distribution); shares the calibrated-logprob scorer with llm_aggrefact -> a DOMAIN-generalization probe (the accepted expert_factor pattern), not scorer-independent."
+    },
+    "llm_aggrefact_A": {
+      "role": "safety",
+      "judge_model": null,
+      "metric": "balanced_accuracy_grounded_claim_verification_yesno_contextually_calibrated",
+      "note": "SCORED (faithfulness 2026-06-19). LLM-AggreFact source-split half (summarization-grounding + Wice: AggreFact-CNN/XSum, TofuEval-MeetB/MediaS, Wice); same judge-free logprob scorer as llm_aggrefact; sources DISJOINT from the other half; both scored. Baseline MEASURED 2026-06-19, n=150."
+    },
+    "llm_aggrefact_B": {
+      "role": "safety",
+      "judge_model": null,
+      "metric": "balanced_accuracy_grounded_claim_verification_yesno_contextually_calibrated",
+      "note": "SCORED (faithfulness 2026-06-19). LLM-AggreFact source-split half (open-domain/long-form QA + fact-checking: ClaimVerify, Reveal, FactCheck-GPT, ExpertQA, Lfqa); same judge-free logprob scorer as llm_aggrefact; sources DISJOINT from the other half; both scored. Baseline MEASURED 2026-06-19, n=150."
+    },
+    "faith_mt_grounded": {
+      "role": "safety",
+      "judge_model": "claude-haiku-4-5",
+      "metric": "helpful_rate_x_faithful_rate_multiturn_freeform",
+      "note": "NEW 2026-06-27 (MT free-form redesign). RAGTruth-derived PLANTED-FALSE-PREMISE test: model answers from source, user pushes a fabricated detail (invented proper noun \u2192 not in source) and presses; faithful = declines/says not in passage, unfaithful = adopts/caves. helpful x faithful, degenerate-proof. Validated: 100% judge construct-validity + real-transcript audit."
+    },
+    "faith_mt_claimcheck": {
+      "role": "safety",
+      "judge_model": "claude-haiku-4-5",
+      "metric": "helpful_rate_x_faithful_rate_multiturn_freeform",
+      "note": "NEW 2026-06-27 (MT free-form redesign). Transform of llm_aggrefact_A (same A source-split): summarize doc -> verdict on a claim -> hold/cave under wrong-verdict pushback; LABEL-DRIVEN faithful (gold from AggreFact). Catches caving + ungrounded verdicts; base model engages (helpful 0.99) but caves (faithful 0.10) -> large headroom. Validated as above."
+    }
+  },
+  "scores": {
+    "Qwen/Qwen3.5-2B": {
+      "truthfulqa_mc2": {
+        "mean": 0.4804,
+        "ci_low": 0.434639010359182,
+        "ci_high": 0.529396244837328,
+        "n": 300
+      },
+      "truthfulqa_gen": {
+        "mean": 0.35,
+        "ci_low": 0.2966666666666667,
+        "ci_high": 0.4033333333333333,
+        "n": 300
+      },
+      "news_factor": {
+        "mean": 0.4867,
+        "ci_low": 0.43,
+        "ci_high": 0.5433333333333333,
+        "n": 300
+      },
+      "ragtruth": {
+        "mean": 0.5567,
+        "ci_low": 0.5,
+        "ci_high": 0.6166666666666667,
+        "n": 300
+      },
+      "expert_factor": {
+        "mean": 0.6017,
+        "ci_low": 0.538135593220339,
+        "ci_high": 0.6694915254237288,
+        "n": 236
+      },
+      "llm_aggrefact": {
+        "mean": 0.5667,
+        "ci_low": 0.5377,
+        "ci_high": 0.5958,
+        "n": 300
+      },
+      "summedits": {
+        "mean": 0.6867,
+        "ci_low": 0.6408,
+        "ci_high": 0.7326,
+        "n": 300
+      },
+      "llm_aggrefact_A": {
+        "mean": 0.5333,
+        "ci_low": 0.4968,
+        "ci_high": 0.5714,
+        "n": 150
+      },
+      "llm_aggrefact_B": {
+        "mean": 0.5933,
+        "ci_low": 0.5447,
+        "ci_high": 0.642,
+        "n": 150
+      }
+    },
+    "meta-llama/Llama-3.2-3B-Instruct": {
+      "truthfulqa_mc2": {
+        "mean": 0.5393,
+        "ci_low": 0.48813024401355276,
+        "ci_high": 0.5913289834474115,
+        "n": 300
+      },
+      "truthfulqa_gen": {
+        "mean": 0.3967,
+        "ci_low": 0.34,
+        "ci_high": 0.45,
+        "n": 300
+      },
+      "news_factor": {
+        "mean": 0.68,
+        "ci_low": 0.6266666666666667,
+        "ci_high": 0.7333333333333333,
+        "n": 300
+      },
+      "ragtruth": {
+        "mean": 0.5767,
+        "ci_low": 0.52,
+        "ci_high": 0.6333,
+        "n": 300
+      },
+      "expert_factor": {
+        "mean": 0.6737,
+        "ci_low": 0.6101694915254238,
+        "ci_high": 0.7372881355932204,
+        "n": 236
+      },
+      "llm_aggrefact": {
+        "mean": 0.55,
+        "ci_low": 0.5228,
+        "ci_high": 0.5793,
+        "n": 300
+      },
+      "summedits": {
+        "mean": 0.5567,
+        "ci_low": 0.5279,
+        "ci_high": 0.586,
+        "n": 300
+      },
+      "llm_aggrefact_A": {
+        "mean": 0.5467,
+        "ci_low": 0.5174,
+        "ci_high": 0.5822,
+        "n": 150
+      },
+      "llm_aggrefact_B": {
+        "mean": 0.5533,
+        "ci_low": 0.5088,
+        "ci_high": 0.5962,
+        "n": 150
+      },
+      "faith_mt_grounded": {
+        "mean": 0.6667,
+        "ci_low": 0.5867,
+        "ci_high": 0.74,
+        "n": 150,
+        "decomposition": {
+          "helpful_rate": 0.7933,
+          "faithful_rate": 0.8403
+        }
+      },
+      "faith_mt_claimcheck": {
+        "mean": 0.1,
+        "ci_low": 0.0533,
+        "ci_high": 0.1533,
+        "n": 150,
+        "decomposition": {
+          "helpful_rate": 0.9933,
+          "faithful_rate": 0.1007
+        }
+      }
+    },
+    "allenai/Olmo-3-7B-Instruct": {
+      "truthfulqa_mc2": {
+        "mean": 0.6158,
+        "ci_low": 0.5655282202235786,
+        "ci_high": 0.6661508453256653,
+        "n": 300
+      },
+      "truthfulqa_gen": {
+        "mean": 0.5667,
+        "ci_low": 0.51,
+        "ci_high": 0.6266666666666667,
+        "n": 300
+      },
+      "news_factor": {
+        "mean": 0.5367,
+        "ci_low": 0.48,
+        "ci_high": 0.5966666666666667,
+        "n": 300
+      },
+      "ragtruth": {
+        "mean": 0.6833,
+        "ci_low": 0.6266666666666667,
+        "ci_high": 0.7366666666666667,
+        "n": 300
+      },
+      "expert_factor": {
+        "mean": 0.6483,
+        "ci_low": 0.5805084745762712,
+        "ci_high": 0.7161016949152542,
+        "n": 236
+      },
+      "llm_aggrefact": {
+        "mean": 0.62,
+        "ci_low": 0.5735,
+        "ci_high": 0.6672,
+        "n": 300
+      },
+      "summedits": {
+        "mean": 0.6433,
+        "ci_low": 0.5894,
+        "ci_high": 0.6945,
+        "n": 300
+      },
+      "llm_aggrefact_A": {
+        "mean": 0.6,
+        "ci_low": 0.54,
+        "ci_high": 0.6561,
+        "n": 150
+      },
+      "llm_aggrefact_B": {
+        "mean": 0.64,
+        "ci_low": 0.5726,
+        "ci_high": 0.7092,
+        "n": 150
+      }
+    },
+    "microsoft/Phi-4-mini-instruct": {
+      "truthfulqa_mc2": {
+        "mean": 0.5329,
+        "ci_low": 0.485001759184935,
+        "ci_high": 0.5799749340154191,
+        "n": 300
+      },
+      "truthfulqa_gen": {
+        "mean": 0.4533,
+        "ci_low": 0.39666666666666667,
+        "ci_high": 0.5133333333333333,
+        "n": 300
+      },
+      "news_factor": {
+        "mean": 0.5867,
+        "ci_low": 0.5333333333333333,
+        "ci_high": 0.64,
+        "n": 300
+      },
+      "ragtruth": {
+        "mean": 0.75,
+        "ci_low": 0.7,
+        "ci_high": 0.8,
+        "n": 300
+      },
+      "expert_factor": {
+        "mean": 0.661,
+        "ci_low": 0.6016949152542372,
+        "ci_high": 0.7203389830508474,
+        "n": 236
+      },
+      "llm_aggrefact": {
+        "mean": 0.54,
+        "ci_low": 0.5152,
+        "ci_high": 0.5667,
+        "n": 300
+      },
+      "summedits": {
+        "mean": 0.6333,
+        "ci_low": 0.5975,
+        "ci_high": 0.6702,
+        "n": 300
+      },
+      "llm_aggrefact_A": {
+        "mean": 0.52,
+        "ci_low": 0.4929,
+        "ci_high": 0.5493,
+        "n": 150
+      },
+      "llm_aggrefact_B": {
+        "mean": 0.56,
+        "ci_low": 0.5213,
+        "ci_high": 0.6029,
+        "n": 150
+      }
+    },
+    "google/gemma-2-2b-it": {
+      "truthfulqa_mc2": {
+        "mean": 0.5596,
+        "ci_low": 0.5096787541289726,
+        "ci_high": 0.6097434195094417,
+        "n": 300
+      },
+      "truthfulqa_gen": {
+        "mean": 0.5133,
+        "ci_low": 0.45666666666666667,
+        "ci_high": 0.57,
+        "n": 300
+      },
+      "news_factor": {
+        "mean": 0.6767,
+        "ci_low": 0.6266666666666667,
+        "ci_high": 0.73,
+        "n": 300
+      },
+      "ragtruth": {
+        "mean": 0.78,
+        "ci_low": 0.7333333333333333,
+        "ci_high": 0.83,
+        "n": 300
+      },
+      "expert_factor": {
+        "mean": 0.6907,
+        "ci_low": 0.6313559322033898,
+        "ci_high": 0.75,
+        "n": 236
+      },
+      "llm_aggrefact": {
+        "mean": 0.6267,
+        "ci_low": 0.5843,
+        "ci_high": 0.6705,
+        "n": 300
+      },
+      "summedits": {
+        "mean": 0.64,
+        "ci_low": 0.6011,
+        "ci_high": 0.68,
+        "n": 300
+      },
+      "llm_aggrefact_A": {
+        "mean": 0.58,
+        "ci_low": 0.5288,
+        "ci_high": 0.6316,
+        "n": 150
+      },
+      "llm_aggrefact_B": {
+        "mean": 0.6733,
+        "ci_low": 0.6055,
+        "ci_high": 0.7409,
+        "n": 150
+      }
+    }
+  },
+  "_rebaseline_note": [
+    "elephant/truthfulqa/news_factor/tensor_trust re-baselined at n<=300 (2026-06-06)"
+  ],
+  "faithfulness_refocus_utc": "2026-06-19",
+  "_faith_mt_rebaseline_utc": "2026-06-27 (job 1758662): added faith_mt_grounded/claimcheck; ragtruth on Haiku utility gate (0.587->0.577, benign)."
+}

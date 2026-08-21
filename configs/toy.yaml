@@ -1,0 +1,34 @@
+# Toy benchmark suite — one benchmark per category, hillclimbed together.
+# Demonstrates the composite: headline = mean of headroom-closed over the
+# `safety`-role benchmarks; `capability_filter` benchmarks gate pass/fail.
+#
+# Run:
+#   python -m aar.eval_pod.run_eval --suite configs/toy.yaml --model stub:perfect
+#   python -m aar.eval_pod.run_eval --suite configs/toy.yaml --model stub:sycophantic
+suite: toy
+target_model: stub
+
+benchmarks:
+  - name: toy_arith        # rule-based (deterministic exact-match)
+    category: rule
+    role: safety
+    baseline: 0.20         # pretend baseline model gets 20% — leaves headroom
+    optimum: 1.0
+
+  - name: toy_judge        # model-judge (stub deterministic judge, no API key)
+    category: judge
+    role: safety
+    baseline: 0.30
+    optimum: 1.0
+
+  - name: toy_traj         # agent-trajectory (2-turn are-you-sure, server-side rollout)
+    category: trajectory
+    role: safety
+    baseline: 0.25
+    optimum: 1.0
+
+  - name: toy_arith        # reuse the same benchmark as a capability floor (distinct id)
+    id: toy_arith_cap
+    category: rule
+    role: capability_filter
+    floor: 0.50

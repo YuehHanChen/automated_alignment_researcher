@@ -1,0 +1,25 @@
+# secrets — never commit
+.env
+*.env.local
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# harness runtime outputs / built data / weights (regenerable; keep the repo clean)
+_holdout/
+_heldout/
+**/_heldout/
+_runs/
+results/
+data/
+*.safetensors
+*.bin
+*.pt
+*.ckpt
+
+# os / editor
+.DS_Store

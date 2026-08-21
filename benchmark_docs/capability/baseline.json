@@ -1,0 +1,141 @@
+{
+  "axis": "capability",
+  "note": "REFRESHED 2026-06-08 from rerun.md (temp-1 re-measurement) as ground truth, per user direction. Replaces the previous greedy baselines + previous-gen model set with the 5 next-gen models at temp-1 (sample, top_p 1.0, seed 1234, batch 32; free-form gen benches additionally use no_repeat_ngram=4 + auto_ceiling=1024 via run_eval._FREEFORM_GEN). Previous file saved as baseline.json.bak_20260608. injecagent + sycon_fp 'n' are sub-sampled (valid-rate / deconfound) and can be <25 (see dont_run_pairs).  ||  PRIOR NOTE: Shared capability_filter basket appended to every safety axis. Per-model floors (the gate is 'don't regress vs THIS model's own capability'). No held-out. Scores populated from scripts/baseline_capability.sh (6-model sweep). | 2026-06-07: appended 4 next-gen models (Qwen3.5-2B, Olmo-3-7B-Instruct, Phi-4-mini-instruct, gemma-4-E2B-it), measured eval-side with the same golden config (Mistral/Ministral-3-3B-2512 skipped \u2014 VLM+FP8, unsupported; Llama-3.2-3B already present). gemma-4-E2B MMLU = standard-protocol 0.277 (self-consistent floor); true chat-format MMLU = 0.507.",
+  "measured_utc": "2026-06-08",
+  "decoding": {
+    "strategy": "sample",
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "auto_ceiling": 4096,
+    "no_repeat_ngram": 0,
+    "batch": 32,
+    "seed": 1234,
+    "freeform_treatment": {
+      "no_repeat_ngram": 4,
+      "auto_ceiling": 1024,
+      "note": "free-form judge-scored gen benches only (run_eval._FREEFORM_GEN); excludes logprob/MCQ, structured-extraction, gsm8k (math-CoT), ifeval"
+    }
+  },
+  "benchmarks": {
+    "mmlu": {
+      "role": "capability_filter",
+      "judge_model": null,
+      "metric": "exact_match_choice",
+      "n": 300
+    },
+    "gsm8k": {
+      "role": "capability_filter",
+      "judge_model": null,
+      "metric": "exact_match_final_number",
+      "n": 200
+    },
+    "ifeval": {
+      "role": "capability_filter",
+      "judge_model": null,
+      "metric": "instruction_compliance",
+      "n": 200
+    }
+  },
+  "scores": {
+    "Qwen/Qwen3.5-2B": {
+      "mmlu": {
+        "mean": 0.5633,
+        "ci_low": 0.5066666666666667,
+        "ci_high": 0.6166666666666667,
+        "n": 300
+      },
+      "gsm8k": {
+        "mean": 0.755,
+        "ci_low": 0.7,
+        "ci_high": 0.81,
+        "n": 200
+      },
+      "ifeval": {
+        "mean": 0.695,
+        "ci_low": 0.635,
+        "ci_high": 0.755,
+        "n": 200
+      }
+    },
+    "meta-llama/Llama-3.2-3B-Instruct": {
+      "mmlu": {
+        "mean": 0.5367,
+        "ci_low": 0.48,
+        "ci_high": 0.5933333333333334,
+        "n": 300
+      },
+      "gsm8k": {
+        "mean": 0.65,
+        "ci_low": 0.585,
+        "ci_high": 0.715,
+        "n": 200
+      },
+      "ifeval": {
+        "mean": 0.625,
+        "ci_low": 0.555,
+        "ci_high": 0.69,
+        "n": 200
+      }
+    },
+    "allenai/Olmo-3-7B-Instruct": {
+      "mmlu": {
+        "mean": 0.57,
+        "ci_low": 0.5133333333333333,
+        "ci_high": 0.6266666666666667,
+        "n": 300
+      },
+      "gsm8k": {
+        "mean": 0.85,
+        "ci_low": 0.795,
+        "ci_high": 0.895,
+        "n": 200
+      },
+      "ifeval": {
+        "mean": 0.755,
+        "ci_low": 0.695,
+        "ci_high": 0.815,
+        "n": 200
+      }
+    },
+    "microsoft/Phi-4-mini-instruct": {
+      "mmlu": {
+        "mean": 0.64,
+        "ci_low": 0.5833333333333334,
+        "ci_high": 0.69,
+        "n": 300
+      },
+      "gsm8k": {
+        "mean": 0.885,
+        "ci_low": 0.84,
+        "ci_high": 0.925,
+        "n": 200
+      },
+      "ifeval": {
+        "mean": 0.74,
+        "ci_low": 0.675,
+        "ci_high": 0.8,
+        "n": 200
+      }
+    },
+    "google/gemma-2-2b-it": {
+      "mmlu": {
+        "mean": 0.5867,
+        "ci_low": 0.5333333333333333,
+        "ci_high": 0.64,
+        "n": 300
+      },
+      "gsm8k": {
+        "mean": 0.59,
+        "ci_low": 0.53,
+        "ci_high": 0.66,
+        "n": 200
+      },
+      "ifeval": {
+        "mean": 0.515,
+        "ci_low": 0.45,
+        "ci_high": 0.58,
+        "n": 200
+      }
+    }
+  }
+}

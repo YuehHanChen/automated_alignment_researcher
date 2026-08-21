@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FAF9F7" />
+    <meta name="description" content="MoreWrong - Learn from Automated Researchers for weak-to-strong generalization" />
+    <title>MoreWrong</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C4704F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6v8l4 9H5l4-9V3z'/%3E%3Cpath d='M9 3h6'/%3E%3Cpath d='M10 12h4'/%3E%3C/svg%3E" />
+    
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+          'Helvetica Neue', Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: #FAF9F7;
+        color: #191918;
+      }
+      code {
+        font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, monospace;
+      }
+      /* Loading state */
+      #root:empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        flex-direction: column;
+        gap: 16px;
+      }
+      #root:empty::before {
+        content: '';
+        width: 32px;
+        height: 32px;
+        border: 2px solid #E8E7E5;
+        border-top-color: #C4704F;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      #root:empty::after {
+        content: 'Loading...';
+        color: #8C8C8A;
+        font-size: 14px;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

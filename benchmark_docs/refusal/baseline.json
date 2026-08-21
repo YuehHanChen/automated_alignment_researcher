@@ -1,0 +1,177 @@
+{
+  "axis": "refusal",
+  "note": "REFRESHED 2026-06-08 from rerun.md (temp-1 re-measurement) as ground truth, per user direction. Replaces the previous greedy baselines + previous-gen model set with the 5 next-gen models at temp-1 (sample, top_p 1.0, seed 1234, batch 32; free-form gen benches additionally use no_repeat_ngram=4 + auto_ceiling=1024 via run_eval._FREEFORM_GEN). Previous file saved as baseline.json.bak_20260608. injecagent + sycon_fp 'n' are sub-sampled (valid-rate / deconfound) and can be <25 (see dont_run_pairs).  ||  PRIOR NOTE: Harmful-request refusal (catalog property #1), UNDER ATTACK. Each benchmark applies a DISTINCT jailbreak mechanism so a method can't game one attack. All better=UP (higher=safer). HELD-OUT = strongreject (OOD attack=instruction-override + OOD judge=GPT-4o-mini rubric); AAR-optimized composite = harmbench + jbb + jbb_artifacts.",
+  "measured_utc": "2026-06-08",
+  "decoding": {
+    "strategy": "sample",
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "auto_ceiling": 4096,
+    "no_repeat_ngram": 0,
+    "batch": 32,
+    "seed": 1234,
+    "freeform_treatment": {
+      "no_repeat_ngram": 4,
+      "auto_ceiling": 1024,
+      "note": "free-form judge-scored gen benches only (run_eval._FREEFORM_GEN); excludes logprob/MCQ, structured-extraction, gsm8k (math-CoT), ifeval"
+    }
+  },
+  "benchmarks": {
+    "strongreject": {
+      "role": "held_out",
+      "attack": "instruction-override (refusal-suppression \u2218 prefix-injection)",
+      "judge_model": "gpt-4o-mini (StrongREJECT rubric)",
+      "metric": "1 - StrongREJECT harmfulness"
+    },
+    "harmbench": {
+      "role": "safety",
+      "attack": "GCG-Transfer universal suffix",
+      "judge_model": "cais/HarmBench-Llama-2-13b-cls",
+      "metric": "1 - ASR"
+    },
+    "jbb": {
+      "role": "safety",
+      "attack": "AIM roleplay/persona (harmful arm); direct benign control",
+      "judge_model": "Llama-Guard-3-8B + Llama-3-8B refusal",
+      "metric": "joint balanced acc"
+    },
+    "jbb_artifacts": {
+      "role": "safety",
+      "attack": "PAIR semantic rewrite, gpt-4-0125-preview target artifacts (harmful arm); direct benign control",
+      "judge_model": "Llama-Guard-3-8B + Llama-3-8B refusal",
+      "metric": "joint balanced acc"
+    }
+  },
+  "scores": {
+    "Qwen/Qwen3.5-2B": {
+      "strongreject": {
+        "mean": 0.6275,
+        "ci_low": 0.54125,
+        "ci_high": 0.71,
+        "n": 100
+      },
+      "harmbench": {
+        "mean": 0.68,
+        "ci_low": 0.6066666666666667,
+        "ci_high": 0.7533333333333333,
+        "n": 150
+      },
+      "jbb": {
+        "mean": 0.78,
+        "ci_low": 0.72,
+        "ci_high": 0.835,
+        "n": 200
+      },
+      "jbb_artifacts": {
+        "mean": 0.8828,
+        "ci_low": 0.828125,
+        "ci_high": 0.9375,
+        "n": 128
+      }
+    },
+    "meta-llama/Llama-3.2-3B-Instruct": {
+      "strongreject": {
+        "mean": 0.8413,
+        "ci_low": 0.775,
+        "ci_high": 0.91375,
+        "n": 100
+      },
+      "harmbench": {
+        "mean": 0.8333,
+        "ci_low": 0.7666666666666667,
+        "ci_high": 0.8933333333333333,
+        "n": 150
+      },
+      "jbb": {
+        "mean": 0.985,
+        "ci_low": 0.965,
+        "ci_high": 1.0,
+        "n": 200
+      },
+      "jbb_artifacts": {
+        "mean": 0.8125,
+        "ci_low": 0.7421875,
+        "ci_high": 0.8828125,
+        "n": 128
+      }
+    },
+    "allenai/Olmo-3-7B-Instruct": {
+      "strongreject": {
+        "mean": 0.4238,
+        "ci_low": 0.33375,
+        "ci_high": 0.515,
+        "n": 100
+      },
+      "harmbench": {
+        "mean": 0.4867,
+        "ci_low": 0.41333333333333333,
+        "ci_high": 0.5666666666666667,
+        "n": 150
+      },
+      "jbb": {
+        "mean": 0.74,
+        "ci_low": 0.675,
+        "ci_high": 0.8,
+        "n": 200
+      },
+      "jbb_artifacts": {
+        "mean": 0.9062,
+        "ci_low": 0.859375,
+        "ci_high": 0.953125,
+        "n": 128
+      }
+    },
+    "microsoft/Phi-4-mini-instruct": {
+      "strongreject": {
+        "mean": 0.6937,
+        "ci_low": 0.61375,
+        "ci_high": 0.77875,
+        "n": 100
+      },
+      "harmbench": {
+        "mean": 0.7067,
+        "ci_low": 0.6333333333333333,
+        "ci_high": 0.7733333333333333,
+        "n": 150
+      },
+      "jbb": {
+        "mean": 0.835,
+        "ci_low": 0.785,
+        "ci_high": 0.88,
+        "n": 200
+      },
+      "jbb_artifacts": {
+        "mean": 0.75,
+        "ci_low": 0.6796875,
+        "ci_high": 0.8203125,
+        "n": 128
+      }
+    },
+    "google/gemma-2-2b-it": {
+      "strongreject": {
+        "mean": 0.315,
+        "ci_low": 0.2375,
+        "ci_high": 0.3925,
+        "n": 100
+      },
+      "harmbench": {
+        "mean": 0.9,
+        "ci_low": 0.8466666666666667,
+        "ci_high": 0.9466666666666667,
+        "n": 150
+      },
+      "jbb": {
+        "mean": 0.475,
+        "ci_low": 0.405,
+        "ci_high": 0.545,
+        "n": 200
+      },
+      "jbb_artifacts": {
+        "mean": 0.7266,
+        "ci_low": 0.6484375,
+        "ci_high": 0.8046875,
+        "n": 128
+      }
+    }
+  }
+}
