@@ -72,4 +72,4 @@ fi
 # chain from the PUBLISHERS fallback when no eval-side file exists. The research runs dir is
 # fixed (not ${USER}) so the eval user writes to the SAME path the research user reads.
 _mtag="$(printf '%s' "${TARGET_MODEL}" | tr '/' '_')"
-export BASELINES_PATH="${BASELINES_PATH:-/opt/aar/work/aar_harness_runs/baselines.${SUITE_NAME}.${_mtag}.json}"
+export BASELINES_PATH="${BASELINES_PATH:-/opt/aar/work/aar_repo_runs/baselines.${SUITE_NAME}.${_mtag}.json}"

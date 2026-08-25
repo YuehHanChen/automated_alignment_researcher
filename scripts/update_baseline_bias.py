@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Update benchmark_docs/bias/baseline.json for the de-enumerated bbq + the new free-form held-out
 (olmo only — other models need re-baselining before THEY launch). ASCII-only notes to avoid encoding issues."""
-import json
+import json, os
+from pathlib import Path
 
-P = "/Users/apple/Desktop/Research/AFP/AAR/benchmark_docs/bias/baseline.json"
+_DOCS = os.getenv("AAR_BENCHMARK_DOCS", str(Path(__file__).resolve().parent.parent / "benchmark_docs"))
+P = f"{_DOCS}/bias/baseline.json"
 d = json.load(open(P))
 olmo = d["scores"]["allenai/Olmo-3-7B-Instruct"]
 olmo["bbq"] = {"mean": 0.5317, "ci_low": 0.4237, "ci_high": 0.6423, "n": 300}

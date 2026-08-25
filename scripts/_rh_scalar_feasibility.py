@@ -15,7 +15,7 @@ bound -> DON'T relaunch; mark (reward_hacking, scalar) capability-bound. GPU (lo
 """
 import json, sys
 from pathlib import Path
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 from aar.eval_pod.models import load_model
 
 orig = [json.loads(l) for l in Path("/opt/aar/work/_rh_share/ls/loophole_scalar.jsonl").read_text().splitlines() if l.strip()]

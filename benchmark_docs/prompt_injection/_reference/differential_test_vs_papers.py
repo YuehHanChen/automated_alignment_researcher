@@ -1,7 +1,9 @@
 """Differential test: the PAPERS' OWN scorer code vs MY implementation, on identical inputs.
 Agreement => my scoring is correct by construction. Disagreement => bug or a documented deviation."""
-import sys, re, types
-sys.path.insert(0, "/Users/apple/Desktop/Research/AFP/AAR/aar_harness")
+import os, sys, re, types
+from pathlib import Path
+# repo root = 3 levels up from benchmark_docs/prompt_injection/_reference/ (it holds the `aar/` package)
+sys.path.insert(0, os.getenv("AAR_REPO") or str(Path(__file__).resolve().parents[3]))
 
 # mock heavy deps so we can exec the papers' source without installing them
 for mod in ("nltk", "rouge"):

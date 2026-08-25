@@ -17,9 +17,9 @@
 # is absent; the real key is ANT_high_prio_API), and with pipefail a missed grep would exit the job before
 # anything runs (the cgroup-teardown lines in the .out are harmless noise, NOT the failure). Strict mode is
 # enabled AFTER the env block, for the publish + run_eval work that should fail loudly.
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-SCRATCH=/opt/aar/eval-user/aar_harness_runs/_biasbaseline
+SCRATCH=/opt/aar/eval-user/aar_repo_runs/_biasbaseline
 MODEL="${1:-allenai/Olmo-3-7B-Instruct}"
 
 export PYTHONPATH="${R}"

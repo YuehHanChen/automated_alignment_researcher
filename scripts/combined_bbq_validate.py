@@ -3,7 +3,7 @@
 publish it, check construct breadth + degenerate-proofness + base-model bias/answerability."""
 import sys, json
 from collections import Counter
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 import torch
 from aar.eval_pod.models import load_model
 from aar.benchmarks.bbq._publish import publish_bbq

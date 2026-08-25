@@ -49,7 +49,7 @@ for i, r in enumerate(rows[:30]):
 # also dump the full table as json for downstream join
 out = T.parent / "_rh_leaderboard.json"
 # write to a research-writable scratch instead (team dir may be read-only-ish)
-scratch = Path("/opt/aar/work/aar_harness_runs/_rh_leaderboard.json")
+scratch = Path("/opt/aar/work/aar_repo_runs/_rh_leaderboard.json")
 scratch.write_text(json.dumps(rows, indent=1))
 print(f"\nfull table -> {scratch}")
 

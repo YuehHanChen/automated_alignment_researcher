@@ -14,8 +14,8 @@ MODELS=("Qwen/Qwen2.5-3B-Instruct" "mistralai/Mistral-7B-Instruct-v0.3" \
         "allenai/OLMo-2-1124-7B-Instruct" "microsoft/Phi-3.5-mini-instruct")
 R=/opt/aar/work/git/_aar_pi_isolated          # ISOLATED (sync can't clobber it)
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_pibaseline
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_pibaseline
 export PYTHONPATH="${R}" HF_HOME=/opt/aar/work/hf_cache
 export HF_TOKEN="$(grep -m1 '^HF_TOKEN=' "${ENVF}" | cut -d= -f2-)"
 export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True" EVAL_GPUS=auto EVAL_BATCH_SIZE=8

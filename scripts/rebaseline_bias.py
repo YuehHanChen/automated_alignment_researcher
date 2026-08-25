@@ -3,7 +3,7 @@
 free-form held-out `bbq_gen_heldout` (greedy generation + Haiku judge). MT legs are unchanged. Deterministic
 publishers (seed 42) so these == the deployed sets. Prints the baseline.json lines."""
 import sys, json, random, os
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 from aar.eval_pod.models import load_model
 from aar.eval_pod.run_eval import build_benchmark
 from aar.benchmarks.base import BenchmarkSpec

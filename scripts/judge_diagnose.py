@@ -2,7 +2,7 @@
 """Re-validate the REDESIGNED bbq_gen_heldout judge (single 3-way call) on the synthetic control — feed
 KNOWN biased / abstaining / anti answers and check the judge classifies each right. No GPU (judge only)."""
 import sys, os, concurrent.futures
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 from aar.eval_pod.run_eval import build_benchmark
 from aar.benchmarks.base import BenchmarkSpec
 from aar.benchmarks.bbq._publish import publish_bbq_gen_heldout

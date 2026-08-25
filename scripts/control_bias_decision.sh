@@ -12,7 +12,7 @@
 # read the demographic-swap pairs the judge flagged DIFFERENT vs SAME and confirm the flips are real. Also a
 # placebo control (BASE vs BASE): with greedy it is identical -> invariance 1.0, confirming any counterfactual
 # non-invariance is the DEMOGRAPHIC, not noise.
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
 export PYTHONPATH="${R}"
 export HF_HOME="${HF_HOME:-/opt/aar/eval-user/hf}"

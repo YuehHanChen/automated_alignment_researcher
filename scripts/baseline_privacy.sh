@@ -25,11 +25,11 @@
 #
 # Prep ONCE on the login node. privacylens needs the agent prompts PRE-RENDERED in the pl_venv
 # (procoder/toolemu) — see aar/benchmarks/privacylens/_render.py:
-#   R=/opt/aar/aar_harness
+#   R=/opt/aar/aar_repo
 #   PY=/opt/aar/work/git/python
 #   export PRIVACYLENS_RENDERED=/opt/aar/work/bench_src/privacylens_rendered.json
 #   PYTHONPATH=$R $PY $R/scripts/publish_suite.py --suite privacy --only privacylens \
-#       --holdout-dir /opt/aar/work/aar_harness_runs/_privbaseline
+#       --holdout-dir /opt/aar/work/aar_repo_runs/_privbaseline
 #   (confaide + privaci_bench already baselined; add them to --only to re-measure.)
 #   sweep : sbatch --array=0-4 scripts/baseline_privacy.sh
 set -euo pipefail
@@ -42,13 +42,13 @@ MODELS=(
   "microsoft/Phi-4-mini-instruct"
   "google/gemma-2-2b-it"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
 # Path overrides so this can ALSO run as the EVAL user (on qos=high32 — the 32-GPU pool — to dodge the
 # research-side GPU contention + cgroup churn). Override ENVF (eval .env: anthropic + HF keys), SCRATCH
 # (eval-writable), HF_HOME (eval cache). Defaults = the research-side paths.
-ENVF="${ENVF:-/opt/aar/aar_harness/.env}"
-SCRATCH="${SCRATCH:-/opt/aar/work/aar_harness_runs/_privbaseline}"
+ENVF="${ENVF:-/opt/aar/aar_repo/.env}"
+SCRATCH="${SCRATCH:-/opt/aar/work/aar_repo_runs/_privbaseline}"
 
 export PYTHONPATH="${R}"
 export HF_HOME="${HF_HOME:-/opt/aar/work/hf_cache}"

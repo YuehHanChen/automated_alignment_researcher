@@ -14,10 +14,10 @@
 # stronger 7B and too strict for gemma-2b). Rule-scored, NO judge.
 #
 # Prep ONCE on the login node (publishes the capability data to the scratch suite):
-#   R=/opt/aar/aar_harness
+#   R=/opt/aar/aar_repo
 #   PY=/opt/aar/work/git/python
 #   PYTHONPATH=$R $PY $R/scripts/publish_suite.py --suite capability \
-#       --holdout-dir /opt/aar/work/aar_harness_runs/_capbaseline
+#       --holdout-dir /opt/aar/work/aar_repo_runs/_capbaseline
 # Then sweep all 6 models (one GPU each, all parallel):
 #   sbatch --array=0-5 scripts/baseline_capability.sh
 #   single: sbatch scripts/baseline_capability.sh <hf-model-id>
@@ -31,10 +31,10 @@ MODELS=(
   "google/gemma-2-2b-it"
   "microsoft/Phi-3.5-mini-instruct"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_capbaseline
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_capbaseline
 
 export PYTHONPATH="${R}"
 export HF_HOME=/opt/aar/work/hf_cache

@@ -29,10 +29,10 @@ MODELS=(
   "google/gemma-2-2b-it"
   "microsoft/Phi-3.5-mini-instruct"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_safetybaseline_v2
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_safetybaseline_v2
 
 export PYTHONPATH="${R}"
 export HF_HOME=/opt/aar/work/hf_cache

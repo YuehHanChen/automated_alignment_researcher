@@ -5,7 +5,7 @@
 prediction path (argmax length-norm answer logprob) + the _SCORED_TEMPLATES rendering used in deployment."""
 import sys, random, statistics
 from collections import defaultdict
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 import torch
 from aar.eval_pod.models import load_model
 from aar.benchmarks.bbq._procgen import gen_items

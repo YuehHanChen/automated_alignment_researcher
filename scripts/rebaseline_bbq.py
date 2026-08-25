@@ -3,7 +3,7 @@
 length-norm answer logprob -> _headline -> 1000x bootstrap CI, seed 0) on publish_bbq(n,seed), which is
 deterministic so this == the deployed set. Prints the baseline.json line."""
 import sys, json, random
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 from aar.eval_pod.models import load_model
 from aar.benchmarks.bbq._publish import publish_bbq
 from aar.benchmarks.bbq.benchmark import BBQ

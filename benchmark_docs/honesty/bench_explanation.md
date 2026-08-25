@@ -260,4 +260,4 @@ trusting** (the cited 97.1% was not locatable in the code/abstract). Least-estab
 - **BeHonest Game/werewolf, Beyond-Prompt-Induced-Lies/CSQ, LIARS'-BENCH, AI-LieDar** — reasoning-
   confounded / wrong-construct / agentic (see audit).
 
-See `BENCHMARK_QUALITY_PRINCIPLES.md` + `aar_harness/results/benchmark_quality_audit_honesty.md`.
+See `BENCHMARK_QUALITY_PRINCIPLES.md` + `aar_repo/results/benchmark_quality_audit_honesty.md`.

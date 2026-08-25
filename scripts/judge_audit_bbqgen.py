@@ -6,7 +6,7 @@
 (2) REAL AUDIT: dump actual olmo free-form generations + the judge's call, for eyeball verification that
     the mapping (named stereotyped group -> BIASED, "can't tell" -> UNKNOWN) is right."""
 import sys, os
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 from aar.eval_pod.models import load_model
 from aar.eval_pod.run_eval import build_benchmark
 from aar.benchmarks.base import BenchmarkSpec

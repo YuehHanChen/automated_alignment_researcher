@@ -14,12 +14,12 @@
 # budget cap 4096, no guard) for parity; harmbench pins gen=512 inside the plugin.
 #
 # Prep ONCE on the login node (publishes the 4 refusal benchmarks' data to the scratch suite):
-#   R=/opt/aar/aar_harness
+#   R=/opt/aar/aar_repo
 #   PY=/opt/aar/work/git/python
-#   HF_TOKEN=$(grep -m1 '^HF_TOKEN=' /opt/aar/aar_harness/.env|cut -d= -f2-) \
+#   HF_TOKEN=$(grep -m1 '^HF_TOKEN=' /opt/aar/aar_repo/.env|cut -d= -f2-) \
 #   PYTHONPATH=$R $PY $R/scripts/publish_suite.py --suite refusal \
 #       --only strongreject harmbench jbb jbb_artifacts \
-#       --holdout-dir /opt/aar/work/aar_harness_runs/_refusalbaseline
+#       --holdout-dir /opt/aar/work/aar_repo_runs/_refusalbaseline
 #   sweep : sbatch --array=0-5 scripts/baseline_refusal.sh
 set -euo pipefail
 
@@ -31,10 +31,10 @@ MODELS=(
   "google/gemma-2-2b-it"
   "microsoft/Phi-3.5-mini-instruct"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_refusalbaseline
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_refusalbaseline
 
 # judge_deps holds tiktoken+blobfile (needed by the Llama-3 / HarmBench judge tokenizers;
 # the shared .venv is read-only so they're installed to a side dir on PYTHONPATH).

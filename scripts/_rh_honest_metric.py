@@ -9,7 +9,7 @@ Shows the comprehension<->nongaming trade-off that the old rate hides.
 """
 import json
 from pathlib import Path
-R = json.loads(Path("/opt/aar/work/aar_harness_runs/_rh_diag_results.json").read_text())
+R = json.loads(Path("/opt/aar/work/aar_repo_runs/_rh_diag_results.json").read_text())
 LEG = "loophole_scalar"
 print("%-28s %5s %5s %5s | %-7s %-9s %-9s" % (
     "model", "comp", "hon", "gam", "compr", "nongame", "HON_FRAC"))

@@ -11,7 +11,7 @@ Questions:
 import json
 from pathlib import Path
 items = [json.loads(l) for l in Path("/opt/aar/work/_rh_share/ls/loophole_scalar.jsonl").read_text().splitlines() if l.strip()]
-R = json.loads(Path("/opt/aar/work/aar_harness_runs/_rh_diag_results.json").read_text())
+R = json.loads(Path("/opt/aar/work/aar_repo_runs/_rh_diag_results.json").read_text())
 recs = R["BASE_olmo"]["loophole_scalar"]["recs"]
 assert len(items) == len(recs), (len(items), len(recs))
 

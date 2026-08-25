@@ -11,7 +11,7 @@
 # PUBLISHERS fallback (exact for qwen) is used with a loud WARN. The held-out is INCLUDED in
 # the holdout suite (eval-only) but EXCLUDED from the research-readable prompt baselines.
 set -euo pipefail
-REPO="${AAR_REPO:-/opt/aar/aar_harness}"
+REPO="${AAR_REPO:-/opt/aar/aar_repo}"
 PY="${AAR_PY:-/opt/aar/work/git/python}"
 # The holdout lives in the eval user's mode-700 space (the same dir the eval worker reads).
 # PER-MODEL by default: holdout/<model_tag>/<axis>. Two teams on the SAME axis but DIFFERENT models

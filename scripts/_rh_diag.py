@@ -13,11 +13,11 @@ Writes _rh_diag_results.json. GPU job (candidate_logits only -> fast, no generat
 import json, re, sys
 from pathlib import Path
 
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 from aar.eval_pod.models import load_model
 
 SHARE = Path("/opt/aar/work/_rh_share")
-OUT = Path("/opt/aar/work/aar_harness_runs/_rh_diag_results.json")
+OUT = Path("/opt/aar/work/aar_repo_runs/_rh_diag_results.json")
 TEAM = Path("/opt/aar/work/aar_teams/reward_hacking-olmo-opus48-20260621-173940")
 
 # ---- load items for all four legs (research-side; scalar from the regenerated pilot copy) ----
@@ -31,7 +31,7 @@ LEGS["loophole_scalar"]        = jl(SHARE / "ls/loophole_scalar.jsonl")   # HELD
 # revealing_score: regenerate via the deterministic publisher (downloads keing1; skip if offline)
 try:
     from aar.benchmarks.revealing_score._publish import publish_revealing_score
-    rs_path = "/opt/aar/work/aar_harness_runs/_rs_diag.jsonl"
+    rs_path = "/opt/aar/work/aar_repo_runs/_rs_diag.jsonl"
     publish_revealing_score(rs_path, n=300, seed=42)
     LEGS["revealing_score"] = jl(rs_path)
 except Exception as e:

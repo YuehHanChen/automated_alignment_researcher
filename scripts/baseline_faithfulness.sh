@@ -19,9 +19,9 @@
 # NB: no `set -e` during env-sourcing below — the key/token greps legitimately miss (ANTHROPIC_API_KEY is
 # absent; the real key is ANT_high_prio_API), and with pipefail a missed grep would exit before anything runs
 # (the cgroup-teardown lines in the .out are harmless noise, NOT the failure). Strict mode is on AFTER the env block.
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-SCRATCH=/opt/aar/eval-user/aar_harness_runs/_faithbaseline
+SCRATCH=/opt/aar/eval-user/aar_repo_runs/_faithbaseline
 MODEL="${1:-allenai/Olmo-3-7B-Instruct}"
 
 export PYTHONPATH="${R}"
@@ -34,7 +34,7 @@ export EVAL_GPUS=auto
 # faithfulness judge = Haiku 4.5 @ concurrency 100 (mirrors the eval_job/eval_worker `faithfulness)` case)
 export JUDGE_BACKEND=anthropic JUDGE_MODEL=claude-haiku-4-5 JUDGE_CONCURRENCY=100
 # ragtruth FAITHFULNESS = finetuned Llama-2-13b detector (~0.80 F1), the scorer its baseline is measured with.
-export RAGTRUTH_DETECTOR=/opt/aar/work/aar_harness_runs/_ragtruth_detector
+export RAGTRUTH_DETECTOR=/opt/aar/work/aar_repo_runs/_ragtruth_detector
 export RAGTRUTH_DETECTOR_BASE=meta-llama/Llama-2-13b-hf
 for _ak in ANTHROPIC_API_KEY ANT_high_prio_API ANT_API_KEY; do
   _av="$(grep -m1 "^${_ak}=" /opt/aar/eval-user/.env 2>/dev/null | cut -d= -f2-)"

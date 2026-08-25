@@ -6,7 +6,7 @@ so this is the durable record.
 
 ## Files
 
-**New (additive) — committed to this repo under `aar_harness/`:**
+**New (additive) — committed to this repo under `aar_repo/`:**
 - `aar/benchmarks/injecagent/` · `open_prompt_injection/` · `tensor_trust_hijack/` · `tensor_trust_extract/`
 - `aar/benchmarks/_injecagent_src.py` — verbatim-vendored InjecAgent prompt + parser + 2-step DS.
 - `scripts/run_pi_isolated.sh` (the 4-model sweep runner) and `scripts/baseline_prompt_injection.sh`.

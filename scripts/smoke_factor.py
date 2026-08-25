@@ -13,7 +13,7 @@ from aar.benchmarks.base import BenchmarkSpec
 from aar.benchmarks.news_factor.benchmark import NewsFactor
 from aar.benchmarks.expert_factor.benchmark import ExpertFactor
 
-SECRET = "/opt/aar/work/aar_harness_runs/_hallucbaseline/hallucination"
+SECRET = "/opt/aar/work/aar_repo_runs/_hallucbaseline/hallucination"
 m = load_model("Qwen/Qwen2.5-3B-Instruct")
 
 # (2) directional sanity — true vs false continuation

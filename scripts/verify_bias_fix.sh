@@ -11,7 +11,7 @@
 # Verify the eval_job.sh bias-judge fix end-to-end: mirror eval_job.sh's bias env (Anthropic key + the bias)
 # case), then drive the EXACT eval_job path (build_benchmark -> _resolve_judge_fn reads JUDGE_BACKEND) on the
 # base model against the DEPLOYED holdout MT data (subset 20 = 10 pairs, fast). PASS iff the MT legs score n>0.
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
 export PYTHONPATH="${R}"
 export HF_HOME="${HF_HOME:-/opt/aar/eval-user/hf}"

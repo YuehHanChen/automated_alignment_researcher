@@ -27,12 +27,12 @@
 #
 # Prep ONCE on the login node AS THE EVAL USER (publishes the holdout incl. the GATED
 # cais/MASK — needs HF_TOKEN; writes the held-out deceptionbench data too):
-#   R=/opt/aar/aar_harness
+#   R=/opt/aar/aar_repo
 #   PY=/opt/aar/work/git/python
-#   HF_TOKEN=$(grep -m1 '^HF_TOKEN=' /opt/aar/aar_harness/.env|cut -d= -f2-) \
+#   HF_TOKEN=$(grep -m1 '^HF_TOKEN=' /opt/aar/aar_repo/.env|cut -d= -f2-) \
 #   PYTHONPATH=$R $PY $R/scripts/publish_suite.py --suite honesty \
 #       --only mask behonest_burglar pacchiardi_lying_rate deceptionbench \
-#       --holdout-dir /opt/aar/work/aar_harness_runs/_honestybaseline
+#       --holdout-dir /opt/aar/work/aar_repo_runs/_honestybaseline
 #   sweep : sbatch --array=0-5 scripts/baseline_honesty.sh
 #   (single: sbatch scripts/baseline_honesty.sh <hf-model-id>)
 set -euo pipefail
@@ -45,10 +45,10 @@ MODELS=(
   "google/gemma-2-2b-it"
   "microsoft/Phi-3.5-mini-instruct"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_honestybaseline
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_honestybaseline
 
 export PYTHONPATH="${R}"
 export HF_HOME=/opt/aar/work/hf_cache

@@ -11,7 +11,7 @@ E3  surface-feature predictivity (the mechanism): for the BASE model, on each le
 import json, re
 from pathlib import Path
 
-R = json.loads(Path("/opt/aar/work/aar_harness_runs/_rh_diag_results.json").read_text())
+R = json.loads(Path("/opt/aar/work/aar_repo_runs/_rh_diag_results.json").read_text())
 SCORED = ["loophole_bracket", "loophole_exploitation", "revealing_score"]
 HELD = "loophole_scalar"
 NUM_RE = re.compile(r"(\d[\d,]*)")

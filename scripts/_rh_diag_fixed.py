@@ -6,7 +6,7 @@ from gate attrition.
 """
 import json
 from pathlib import Path
-R = json.loads(Path("/opt/aar/work/aar_harness_runs/_rh_diag_results.json").read_text())
+R = json.loads(Path("/opt/aar/work/aar_repo_runs/_rh_diag_results.json").read_text())
 LEGS = ["loophole_bracket", "loophole_exploitation", "revealing_score", "loophole_scalar"]
 base = "BASE_olmo"
 models = list(R.keys())

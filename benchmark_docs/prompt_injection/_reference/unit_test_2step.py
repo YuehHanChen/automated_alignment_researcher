@@ -2,7 +2,7 @@ import json, sys
 from aar.benchmarks._injecagent_src import evaluate_output_prompted, build_step2_user_prompt
 from aar.benchmarks.injecagent.benchmark import InjecAgent
 from aar.benchmarks.open_prompt_injection.benchmark import eval_sst2, eval_spam, eval_hsol
-D = "/opt/aar/work/aar_harness_runs/_pibaseline/prompt_injection"
+D = "/opt/aar/work/aar_repo_runs/_pibaseline/prompt_injection"
 NL = "\n"
 
 items = [json.loads(l) for l in open(f"{D}/injecagent.jsonl")]

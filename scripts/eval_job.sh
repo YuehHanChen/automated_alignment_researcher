@@ -24,7 +24,7 @@
 set -uo pipefail
 RID="${1:?usage: eval_job.sh <run_id> [suite]}"
 SUITE="${2:-refusal}"
-REPO=/opt/aar/aar_harness                 # research-owned code, world-readable
+REPO=/opt/aar/aar_repo                 # research-owned code, world-readable
 # judge_deps holds tiktoken+sentencepiece+blobfile for the refusal PAPER judges — same as eval_worker.sh.
 export PYTHONPATH="${REPO}:/opt/aar/work/judge_deps"
 export HF_HOME="${HF_HOME:-/opt/aar/eval-user/hf}"
@@ -33,8 +33,8 @@ export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
 export HARNESS_TRANSPORT=fs
 export HOLDOUT_DIR="${HOLDOUT_DIR:-/opt/aar/eval-user/holdout}"
 export HELDOUT_SCORES_DIR="${HELDOUT_SCORES_DIR:-${HOLDOUT_DIR}/heldout_scores}"
-export SUBMISSIONS_DIR="${SUBMISSIONS_DIR:-/opt/aar/work/aar_harness_runs/submissions}"
-export SCORES_DIR="${SCORES_DIR:-/opt/aar/work/aar_harness_runs/scores}"
+export SUBMISSIONS_DIR="${SUBMISSIONS_DIR:-/opt/aar/work/aar_repo_runs/submissions}"
+export SCORES_DIR="${SCORES_DIR:-/opt/aar/work/aar_repo_runs/scores}"
 export OAI_API="$(grep -h '^OAI_API=' /opt/aar/eval-user/.oai_env /opt/aar/eval-user/.env 2>/dev/null | head -1 | cut -d= -f2-)"
 # Anthropic key for the JUDGE_BACKEND=anthropic judges (honesty: mask + deceptionbench, claude-haiku-4-5).
 # Load whichever name is present (the judge's _anthropic_key() checks all three). KEY=VALUE extraction
@@ -61,7 +61,7 @@ case "${SUITE}" in
                       # not the prompt-judge fallback (~0.40 F1) — the baseline (benchmark_docs) was
                       # measured WITH it, so omitting it scores trained models on a DIFFERENT, worse
                       # scorer and the trained-baseline delta is invalid. Pin both (mirror baseline_hallucination.sh).
-                      export RAGTRUTH_DETECTOR="${RAGTRUTH_DETECTOR:-/opt/aar/work/aar_harness_runs/_ragtruth_detector}"
+                      export RAGTRUTH_DETECTOR="${RAGTRUTH_DETECTOR:-/opt/aar/work/aar_repo_runs/_ragtruth_detector}"
                       export RAGTRUTH_DETECTOR_BASE="${RAGTRUTH_DETECTOR_BASE:-meta-llama/Llama-2-13b-hf}" ;;
 esac
 # JUDGE backend MUST match the axis's baseline (eval_worker.sh sets this too; it was MISSING here

@@ -13,7 +13,7 @@
 #      judge flagged BIASED (different decision) vs NOT-BIASED (same) and check the LLM judge is correct.
 #  (2) PLACEBO control: counterfactual (man vs woman) vs control (two different men). If invariance(cf) <<
 #      invariance(control), the gender swap (not noise) drives non-invariance. Same temp-1/seed-1234 decoding.
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
 export PYTHONPATH="${R}"
 export HF_HOME="${HF_HOME:-/opt/aar/eval-user/hf}"

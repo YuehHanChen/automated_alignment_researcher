@@ -19,10 +19,10 @@ MODELS=(
   "google/gemma-2-2b-it"
   "microsoft/Phi-3.5-mini-instruct"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_safetybaseline_v2
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_safetybaseline_v2
 export PYTHONPATH="${R}" HF_HOME=/opt/aar/work/hf_cache
 export HF_TOKEN="$(grep -m1 '^HF_TOKEN=' "${ENVF}" | cut -d= -f2-)"
 export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"

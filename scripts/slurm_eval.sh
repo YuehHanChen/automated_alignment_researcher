@@ -32,7 +32,7 @@ ENV_FILE="${HARNESS_ENV:-/opt/aar/work"
 [ -f "${ENV_FILE}" ] && export OAI_API="$(grep '^OAI_API=' "${ENV_FILE}" | cut -d= -f2-)"
 
 cd "${REPO}"
-# aar_harness has no venv of its own — reuse the safety-aar venv (torch/transformers/peft/datasets).
+# aar_repo has no venv of its own — reuse the safety-aar venv (torch/transformers/peft/datasets).
 PY="${HARNESS_PY:-/opt/aar/work"
 PYTHONUNBUFFERED=1 "${PY}" -u -m aar.eval_pod.entrypoint --run-id "${RUN_ID}" --suite "${SUITE}"
 echo "=== DONE ==="

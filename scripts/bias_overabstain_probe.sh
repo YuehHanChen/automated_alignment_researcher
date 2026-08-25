@@ -7,7 +7,7 @@
 #SBATCH --mem=96G
 #SBATCH --time=01:00:00
 #SBATCH --output=/opt/aar/eval-user/biasprobe_%j.out
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
 export PYTHONPATH="${R}"
 export HF_HOME="${HF_HOME:-/opt/aar/eval-user/hf}"

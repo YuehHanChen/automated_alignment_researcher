@@ -13,7 +13,7 @@
 # Benchmark count = (2-3 safety) + (3 capability) = 5 or 6, so this requests
 # gpu:5 or gpu:6 automatically — nothing hardcoded.
 set -euo pipefail
-REPO=/opt/aar/aar_harness
+REPO=/opt/aar/aar_repo
 # Default the suite from the SAME single source the research side uses (scripts/axis_env.sh),
 # so the eval worker scores the axis the chains optimize. Pass an explicit arg (or AXIS=<name>)
 # to override. The held-out is read from the published suite YAML, so it stays in sync.

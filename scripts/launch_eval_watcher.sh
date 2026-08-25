@@ -11,7 +11,7 @@
 # Then (per-team: set SUBMISSIONS_DIR/SCORES_DIR to the team's dirs, same as the old worker):
 #   AXIS=sycophancy scripts/launch_eval_watcher.sh   [gpus_per_eval=2]
 set -euo pipefail
-REPO=/opt/aar/aar_harness
+REPO=/opt/aar/aar_repo
 source "${REPO}/scripts/axis_env.sh"      # SUITE_NAME from the single axis source (== what the chains optimize)
 SUITE="${1:-${SUITE_NAME}}"
 GPE="${2:-2}"

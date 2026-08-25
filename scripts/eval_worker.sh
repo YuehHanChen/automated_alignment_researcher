@@ -18,7 +18,7 @@
 # holdout — it only stages a model and polls SCORES_DIR. Exits after being idle.
 
 set -uo pipefail
-REPO=/opt/aar/aar_harness          # research-owned code, world-readable
+REPO=/opt/aar/aar_repo          # research-owned code, world-readable
 # judge_deps holds tiktoken+sentencepiece+blobfile for the refusal-property PAPER judges
 # (HarmBench-13b-cls / Llama-Guard-3-8B / Llama-3-8B tokenizers). MUST match the baseline
 # runner (scripts/baseline_refusal.sh) or refusal scores fail-closed -> "safe" and break the
@@ -49,8 +49,8 @@ export HOLDOUT_DIR="${HOLDOUT_DIR-}"
 # the exact config its baseline used. Lives next to the holdout, mode-700.
 export BENCHMARK_DOCS_DIR="${BENCHMARK_DOCS_DIR:-/opt/aar/eval-user/benchmark_docs}"
 # HELD-OUT scores: per-team (set in the per-team block); legacy fallback finalized after HOLDOUT_DIR.
-export SUBMISSIONS_DIR="${SUBMISSIONS_DIR:-/opt/aar/work/aar_harness_runs/submissions}"
-export SCORES_DIR="${SCORES_DIR:-/opt/aar/work/aar_harness_runs/scores}"      # research-readable handoff (stripped)
+export SUBMISSIONS_DIR="${SUBMISSIONS_DIR:-/opt/aar/work/aar_repo_runs/submissions}"
+export SCORES_DIR="${SCORES_DIR:-/opt/aar/work/aar_repo_runs/scores}"      # research-readable handoff (stripped)
 export OAI_API="$(grep -h '^OAI_API=' /opt/aar/eval-user/.oai_env /opt/aar/eval-user/.env 2>/dev/null | head -1 | cut -d= -f2-)"
 # Anthropic key for JUDGE_BACKEND=anthropic (honesty: mask + deceptionbench, claude-haiku-4-5).
 for _ak in ANTHROPIC_API_KEY ANT_high_prio_API ANT_API_KEY; do
@@ -79,7 +79,7 @@ case "${SUITE}" in
   hallucination|faithfulness) export EVAL_BATCH_SIZE="${EVAL_BATCH_SIZE:-32}"
                       # ragtruth FAITHFULNESS needs the finetuned Llama-2-13b detector (~0.80 F1), not the
                       # prompt-judge fallback — pin both (mirror eval_job.sh / baseline_hallucination.sh).
-                      export RAGTRUTH_DETECTOR="${RAGTRUTH_DETECTOR:-/opt/aar/work/aar_harness_runs/_ragtruth_detector}"
+                      export RAGTRUTH_DETECTOR="${RAGTRUTH_DETECTOR:-/opt/aar/work/aar_repo_runs/_ragtruth_detector}"
                       export RAGTRUTH_DETECTOR_BASE="${RAGTRUTH_DETECTOR_BASE:-meta-llama/Llama-2-13b-hf}" ;;
   power_seeking)      export EVAL_BATCH_SIZE="${EVAL_BATCH_SIZE:-32}" ;;
 esac

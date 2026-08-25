@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Prepend a 2026-06-28 update banner to the two bias benchmark_docs prose files."""
-BD = "/Users/apple/Desktop/Research/AFP/AAR/benchmark_docs/bias"
+import os
+from pathlib import Path
+
+BD = os.getenv("AAR_BENCHMARK_DOCS", str(Path(__file__).resolve().parent.parent / "benchmark_docs")) + "/bias"
 
 COMMON = (
     "> **2026-06-28 DE-ENUMERATION + FORMAT-SHIFT HELD-OUT (supersedes the 06-27 banner re: bbq + the held-out).**\n"

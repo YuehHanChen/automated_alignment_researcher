@@ -11,7 +11,7 @@
 # Measure the bbq_heldout baseline (physical_appearance category in the SCORED MCQ format) — it is stripped
 # from the full-suite baseline result (held-out), so measure it directly. BBQ is logprob-scored (temperature-
 # invariant), so decoding is moot; n=300 matches the deployed publish.
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
 export PYTHONPATH="${R}"
 export HF_HOME="${HF_HOME:-/opt/aar/eval-user/hf}"

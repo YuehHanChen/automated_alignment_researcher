@@ -17,7 +17,7 @@ import json, sys
 from itertools import combinations
 from pathlib import Path
 
-sys.path.insert(0, "/opt/aar/aar_harness")
+sys.path.insert(0, "/opt/aar/aar_repo")
 from aar.eval_pod.models import load_model
 
 import random
@@ -177,5 +177,5 @@ if __name__ == "__main__":
             import torch, gc; gc.collect(); torch.cuda.empty_cache()
         except Exception:
             pass
-    Path("/opt/aar/work/aar_harness_runs/_rh_balanced_bracket.json").write_text(json.dumps(out, indent=1))
+    Path("/opt/aar/work/aar_repo_runs/_rh_balanced_bracket.json").write_text(json.dumps(out, indent=1))
     print("wrote _rh_balanced_bracket.json")

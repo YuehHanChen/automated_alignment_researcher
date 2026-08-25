@@ -13,7 +13,7 @@
 # naming the benchmark is expected and is not a SCORE leak.
 set -uo pipefail
 HELD="${1:-sycon_fp}"
-R="${AAR_REPO:-/opt/aar/aar_harness}"
+R="${AAR_REPO:-/opt/aar/aar_repo}"
 PY="${AAR_PY:-/opt/aar/work/git/python}"
 
 eval "$(PYTHONPATH="$R" "$PY" - <<'PYEOF'

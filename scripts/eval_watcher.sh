@@ -24,11 +24,11 @@
 #   SUBMISSIONS_DIR/SCORES_DIR/HOLDOUT_DIR : per-model dirs (propagated to the eval jobs)
 set -uo pipefail
 SUITE="${1:-refusal}"
-REPO=/opt/aar/aar_harness
+REPO=/opt/aar/aar_repo
 export HARNESS_TRANSPORT=fs
 export BENCHMARK_DOCS_DIR="${BENCHMARK_DOCS_DIR:-/opt/aar/eval-user/benchmark_docs}"
-export SUBMISSIONS_DIR="${SUBMISSIONS_DIR:-/opt/aar/work/aar_harness_runs/submissions}"
-export SCORES_DIR="${SCORES_DIR:-/opt/aar/work/aar_harness_runs/scores}"
+export SUBMISSIONS_DIR="${SUBMISSIONS_DIR:-/opt/aar/work/aar_repo_runs/submissions}"
+export SCORES_DIR="${SCORES_DIR:-/opt/aar/work/aar_repo_runs/scores}"
 export HOLDOUT_DIR="${HOLDOUT_DIR-}"
 EVAL_GPUS_PER_JOB="${EVAL_GPUS_PER_JOB:-2}"   # 2 GPUs/eval -> up to 16 concurrent under high32 (32-GPU cap)
 EVAL_QOS="${EVAL_QOS:-high32}"                # eval-user's 32-GPU NON-preemptible QOS (the blocking AAR

@@ -18,12 +18,12 @@
 # the eval-private heldout dir; the research handoff is stripped.
 #
 # Prep ONCE on the login node (publishes the 5 benchmarks' data to the scratch suite):
-#   R=/opt/aar/aar_harness
+#   R=/opt/aar/aar_repo
 #   PY=/opt/aar/work/git/python
-#   HF_TOKEN=$(grep -m1 '^HF_TOKEN=' /opt/aar/aar_harness/.env|cut -d= -f2-) \
+#   HF_TOKEN=$(grep -m1 '^HF_TOKEN=' /opt/aar/aar_repo/.env|cut -d= -f2-) \
 #   PYTHONPATH=$R $PY $R/scripts/publish_suite.py --suite hallucination \
 #       --only truthfulqa_mc2 truthfulqa_gen news_factor expert_factor ragtruth \
-#       --holdout-dir /opt/aar/work/aar_harness_runs/_hallucbaseline
+#       --holdout-dir /opt/aar/work/aar_repo_runs/_hallucbaseline
 #   sweep : sbatch --array=0-5 scripts/baseline_hallucination.sh
 set -euo pipefail
 
@@ -35,10 +35,10 @@ MODELS=(
   "google/gemma-2-2b-it"
   "microsoft/Phi-3.5-mini-instruct"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_hallucbaseline
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_hallucbaseline
 
 export PYTHONPATH="${R}"
 export HF_HOME=/opt/aar/work/hf_cache
@@ -57,7 +57,7 @@ export JUDGE_BACKEND=local
 export JUDGE_MODEL_LOCAL=Qwen/Qwen2.5-7B-Instruct
 # RAGTruth FAITHFULNESS scored by the paper's FINETUNED detector (Llama-2-13b + our LoRA),
 # validated ~0.81 overall / ~0.67-0.72 QA+Summary response-level F1 vs the prompt-judge's 0.40.
-export RAGTRUTH_DETECTOR=/opt/aar/work/aar_harness_runs/_ragtruth_detector
+export RAGTRUTH_DETECTOR=/opt/aar/work/aar_repo_runs/_ragtruth_detector
 export RAGTRUTH_DETECTOR_BASE=meta-llama/Llama-2-13b-hf
 # Held-out (expert_factor) full score -> eval-private dir; research handoff is stripped.
 export HELDOUT_SCORES_DIR="${SCRATCH}/heldout_scores"

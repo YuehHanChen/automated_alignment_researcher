@@ -17,7 +17,7 @@ research (aar-user)                         eval (eval-user)
   poll scores/<run_id>.json  <----------------     scores -> scores/<run_id>.json (shared grp)
   (CANNOT read the holdout)                         (writes only to the shared scores channel)
 ```
-- `submissions/` and `scores/` live under `/opt/aar/work/aar_harness_runs`,
+- `submissions/` and `scores/` live under `/opt/aar/work/aar_repo_runs`,
   group `shared`, setgid `2770` — cross-user reads, neither writes the other's dirs.
 - `HOLDOUT_DIR` (eval-only) = `/opt/aar/eval-user/holdout`.
 
@@ -26,10 +26,10 @@ research (aar-user)                         eval (eval-user)
 # 1. EVAL side (secret holder) — PREREQUISITE: publish the holdout for this axis+model
 #    BEFORE anything else (see "Publishing the holdout" below). The AAR never sees this step.
 ssh -i ~/.ssh/id_ed25519 -p 19934 eval-user@EVAL_HOST \
-  'cd /opt/aar/aar_harness && AXIS=sycophancy MODEL=mistral scripts/publish_holdout.sh'
+  'cd /opt/aar/aar_repo && AXIS=sycophancy MODEL=mistral scripts/publish_holdout.sh'
 
 # 2. EVAL side — start the worker for that axis (serves all chains):
-ssh ... eval-user@... 'cd .../aar_harness && AXIS=sycophancy scripts/launch_eval_worker.sh'
+ssh ... eval-user@... 'cd .../aar_repo && AXIS=sycophancy scripts/launch_eval_worker.sh'
 
 # 3. RESEARCH side (the AAR / you) — launch the team for the SAME axis+model:
 ssh cluster 'cd /opt/aar/work && AXIS=sycophancy MODEL=mistral scripts/launch_team.sh "alpha beta" 100 47'
@@ -43,7 +43,7 @@ eval worker running to serve all chains.
 
 ## What enforces it (and what was removed)
 - The **only** copy of the holdout is the eval-owned mode-700 dir above. The old
-  research-readable copy at `/opt/aar/work/aar_harness_holdout`
+  research-readable copy at `/opt/aar/work/aar_repo_holdout`
   has been **deleted** — leaving it would have let the AAR read the answer keys
   directly and defeat the lock. (It's regenerable: see re-publish, below.)
 - `EVAL_VIA_WORKER` (config.py, default true): when set, the research side's
@@ -65,7 +65,7 @@ baselines.
 ```bash
 # as the eval user, for the axis + model you'll run:
 ssh -i ~/.ssh/id_ed25519 -p 19934 eval-user@EVAL_HOST \
-  'cd /opt/aar/aar_harness && \
+  'cd /opt/aar/aar_repo && \
    AXIS=sycophancy MODEL=mistral scripts/publish_holdout.sh && \
    chmod -R 700 /opt/aar/eval-user/holdout'
 ```
@@ -102,10 +102,10 @@ Slurm cluster.
 
 ```
 /opt/aar/work
-  aar_harness_holdout/<suite>/        # SECRET: test inputs + answers + <suite>.yaml
+  aar_repo_holdout/<suite>/        # SECRET: test inputs + answers + <suite>.yaml
     <suite>.yaml                      #   (the suite config lives WITH the secret)
     ...                               #   read only by the eval job
-  aar_harness_runs/submissions/<run_id>/
+  aar_repo_runs/submissions/<run_id>/
     model/                            # the AAR's submitted model (ephemeral, regenerable)
     scores.json                       # aggregate scores (the only thing the AAR gets back)
 ```
@@ -141,7 +141,7 @@ real risks are an accidental `rm` and quota pressure. Mitigations:
 
 1. **Separate-user mode-700 (above)** also blocks accidental deletion by the AAR.
 2. **The holdout is reproducible** — keep the publish script (that builds
-   `aar_harness_holdout/<suite>/` from public datasets + your secret answer
+   `aar_repo_holdout/<suite>/` from public datasets + your secret answer
    keys) in git. Regenerate anytime.
 3. **Back up the answer keys** to durable storage:
    - the cluster's slow **network cold-storage drive** (handbook's intended use), or

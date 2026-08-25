@@ -19,7 +19,7 @@
 set -euo pipefail
 
 CLUSTER_SSH="${CLUSTER_SSH:-cluster}"                 # your ~/.ssh/config alias for the cluster
-REMOTE_REPO="${REMOTE_REPO:-/opt/aar/aar_harness}"
+REMOTE_REPO="${REMOTE_REPO:-/opt/aar/aar_repo}"
 REMOTE_VENV="${REMOTE_VENV:-/opt/aar/work/dashboard_venv/bin/python}"
 REMOTE_EXPORT="${REMOTE_EXPORT:-/opt/aar/work/aar_site_export}"
 LOCAL_STAGE="${LOCAL_STAGE:-/tmp/aar_site}"

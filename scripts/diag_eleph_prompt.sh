@@ -8,10 +8,10 @@
 #SBATCH --time=00:30:00
 #SBATCH --output=/opt/aar/work
 set -euo pipefail
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SC=/opt/aar/work/aar_harness_runs/_safetybaseline_v2
+ENVF=/opt/aar/aar_repo/.env
+SC=/opt/aar/work/aar_repo_runs/_safetybaseline_v2
 export PYTHONPATH="${R}" HF_HOME=/opt/aar/work/hf_cache
 export HF_TOKEN="$(grep -m1 '^HF_TOKEN=' "${ENVF}" | cut -d= -f2-)"
 export EVAL_AUTO_CEILING=4096 EVAL_BATCH_SIZE=8

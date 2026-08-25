@@ -13,12 +13,12 @@
 # 8) for parity. Each Tensor Trust benchmark runs 2 arms (attack + access-code/DV).
 #
 # Prep ONCE on the login node (publishes the data to the scratch suite):
-#   R=/opt/aar/aar_harness
+#   R=/opt/aar/aar_repo
 #   PY=/opt/aar/work/git/python
 #   PYTHONPATH=$R HF_HOME=/opt/aar/work/hf_cache $PY $R/scripts/publish_suite.py \
 #       --suite prompt_injection \
 #       --only injecagent open_prompt_injection tensor_trust_hijack tensor_trust_extract \
-#       --holdout-dir /opt/aar/work/aar_harness_runs/_pibaseline
+#       --holdout-dir /opt/aar/work/aar_repo_runs/_pibaseline
 #   sweep : sbatch --array=0-5 scripts/baseline_prompt_injection.sh
 #   single: sbatch scripts/baseline_prompt_injection.sh <hf-model-id>
 set -euo pipefail
@@ -31,10 +31,10 @@ MODELS=(
   "google/gemma-2-2b-it"
   "microsoft/Phi-3.5-mini-instruct"
 )
-R=/opt/aar/aar_harness
+R=/opt/aar/aar_repo
 PY=/opt/aar/work/git/python
-ENVF=/opt/aar/aar_harness/.env
-SCRATCH=/opt/aar/work/aar_harness_runs/_pibaseline
+ENVF=/opt/aar/aar_repo/.env
+SCRATCH=/opt/aar/work/aar_repo_runs/_pibaseline
 
 export PYTHONPATH="${R}"
 export HF_HOME=/opt/aar/work/hf_cache
