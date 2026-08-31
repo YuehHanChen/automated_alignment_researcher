@@ -1,4 +1,4 @@
-> ✅ **CURRENT STATE 2026-06-27 (MT free-form redesign — supersedes the stale 2026-06-08 banner below).**
+> **Current state.**
 > **SCORED (5, geomean):** `ragtruth` + `llm_aggrefact_A` + `llm_aggrefact_B` (single-turn) + `faith_mt_grounded`
 > + `faith_mt_claimcheck` (multi-turn free-form). **HELD-OUT:** `summedits` (unchanged). Parity for the new legs:
 > - **Decoding** (both sides): sampling, `temperature=1.0`, `top_p=1.0`, `seed=1234`, batch 32 (golden
@@ -14,19 +14,7 @@
 >   `--target-model` bakes them into the suite YAML (verified faith_mt_claimcheck→0.10, faith_mt_grounded→0.667,
 >   NOT the registry 0.40 placeholder). Re-run `baseline_faithfulness.sh <model>` if any scorer/decoding changes.
 >
-> ⚠️ **PARITY NOT YET LIVE (status 2026-06-08).** The baselines are now **temp-1** (refreshed from `rerun.md`),
-> but the live `eval_worker.sh` still runs **greedy** — no `EVAL_TEMPERATURE`/`EVAL_TOP_P`/`EVAL_SEED`, and
-> sycophancy/refusal still use batch 8 + no free-form ngram/ceiling. **A trained-vs-baseline delta computed
-> right now would be INVALID.** The worker fix (set globally: `EVAL_TEMPERATURE=1.0 EVAL_TOP_P=1.0
-> EVAL_SEED=1234 EVAL_RUN_BATCH=32 EVAL_RUN_NGRAM=4 EVAL_RUN_GEN_CEILING=1024`) is **PENDING a remote-code
-> sync the user will trigger**. Until then, the temp-1 parity contract below is the TARGET, not live state.
-
 # Hallucination / factuality — baseline ↔ trained-eval parity contract
-
-> **FACTUALITY REFOCUS 2026-06-17 (see README.md).** SCORED = `ragtruth` + `llm_aggrefact` (grounded) +
-> `news_factor` + `expert_factor` (FACTOR knowledge-factuality) — the full factuality picture. HELD-OUT =
-> `summedits` ONLY (the generalizable grounded canary). `truthfulqa_mc2` + `truthfulqa_gen` ARCHIVED.
-
 ## `llm_aggrefact` (SCORED) + `summedits` (HELD-OUT) — shared parity surface (same scorer)
 - **Judge:** none — judge-free **logprob** (length-normalized continuation log-prob argmax over the
   single-token answers "yes"/"no") with **doc-nulled contextual calibration** (`logprob(label|real) −

@@ -1,9 +1,6 @@
 # Concealing-uncertainty axis (property #10) — benchmark explanations
 
-> **Status: IN PROGRESS — building one bench at a time (BENCHMARK_CATALOG §10).** Planned suite:
-> `llm_uncertainty_bench` (internal logit-confidence calibration) + `abstentionbench` (broad abstention) +
-> `verbalized_ece` (verbalized calibration) + `sciq_uncertainty` (HELD-OUT, OOD science; reuses the
-> conformal scorer) + the capability basket. **✅ AXIS COMPLETE (4 legs): SCORED = `llm_uncertainty_bench`
+> **Suite (4 legs).** SCORED = `llm_uncertainty_bench`
 > (internal-logit calibration) + `verbalized_ece` (verbalized calibration) + `abstentionbench` (broad
 > abstention, judge); HELD-OUT † = `sciq_uncertainty` (OOD-science, reuses the conformal scorer).**
 > Substrates are kept DISJOINT across the axis.
@@ -65,14 +62,6 @@ n=150, all runnable. Wide spread + strong model variation → a clean hill-climb
 oracle (sharp+correct) → **1.0** (SS 1); uniform logits → **0.20** (SS 5–6); random → **0.12**; always-IDK
 (mass on E) → **0.60** (below oracle — not rewarded). Only genuine sharp+correct calibration scores high;
 diffuse/IDK/uniform policies floor. Coverage stays conformal-guaranteed → can't be gamed.
-
-### Retired / rejected for this axis
-- **SelfAware — DROPPED** (its knowledge-boundary facet is subsumed by AbstentionBench, of which it's even a
-  constituent → overlap, not coverage). Replaced by LLM-Uncertainty-Bench (the distinct internal-logit facet).
-- **MMLU / HaluEval splits of LLM-Uncertainty-Bench — dropped** (MMLU = capability basket; HaluEval =
-  hallucination #4) to keep substrates disjoint within the property and across axes.
-
----
 
 ## `verbalized_ece` — verbalized-confidence calibration (SCORED)
 
@@ -162,7 +151,7 @@ commonsense/reading-comp substrates** (llm_uncertainty_bench 0.19–0.61) — an
 logit) is exactly the cross-domain generalization signal** the held-out exists to surface. All in (0.05, 0.9)
 → sciq adds no dont_run exclusions (the axis is gated Olmo-only by `verbalized_ece`'s floor, independent of sciq).
 
-### Honest caveat (kept as the held-out 2026-06-18 with these limitations documented)
+### Honest caveat
 1. **DOMAIN-generalization only, not scorer/format/facet-generalization.** It reuses the SAME 6-option
    conformal-MCQA scorer as `llm_uncertainty_bench` (only the domain differs), so a method that games the
    conformal-MCQA format (sharpen option logits without true calibration) moves both → not caught. The

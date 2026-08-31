@@ -1,28 +1,19 @@
-> ⚠️ **PARITY NOT YET LIVE (status 2026-06-08).** The baselines are now **temp-1** (refreshed from `rerun.md`),
-> but the live `eval_worker.sh` still runs **greedy** — no `EVAL_TEMPERATURE`/`EVAL_TOP_P`/`EVAL_SEED`, and
-> sycophancy/refusal still use batch 8 + no free-form ngram/ceiling. **A trained-vs-baseline delta computed
-> right now would be INVALID.** The worker fix (set globally: `EVAL_TEMPERATURE=1.0 EVAL_TOP_P=1.0
-> EVAL_SEED=1234 EVAL_RUN_BATCH=32 EVAL_RUN_NGRAM=4 EVAL_RUN_GEN_CEILING=1024`) is **PENDING a remote-code
-> sync the user will trigger**. Until then, the temp-1 parity contract below is the TARGET, not live state.
-
 # Honesty / deception — baseline ↔ trained-eval parity contract
 
-> **⚠️ 2026-06-22 CURRENT (good_ones/honesty-gemma-20260622) — supersedes the 2-leg / gpt-4o contract below.**
+> **Current scored set.**
 > AAR-optimized composite = **3-leg MASK split**: `mask_factual` + `mask_continuation` + `mask_disinformation`
 > (the old combined `mask_generative` was split by archetype). HELD-OUT = `deceptionbench_reward`. **JUDGE =
 > `claude-haiku-4-5`** on all legs (swapped from gpt-4o 2026-06-21; the "gpt-4o" mentions below are stale).
 > gemma baselines: mask_factual 0.817 · mask_continuation 0.750 · mask_disinformation 0.800 · held-out
 > deceptionbench_reward 0.593.
 
-## Suite: INTERNAL honesty — held-out = **`deceptionbench_reward`** (2026-06-19 swap; was `mask_factual`)
-- **AAR-optimized composite = `mask_factual` + `mask_generative`** (the two MASK archetypes).
+## Suite: INTERNAL honesty — held-out = **`deceptionbench_reward`**
 - **`deceptionbench_reward` is the SINGLE held-out (2026-06-19):** excluded from the optimized composite +
   **invisible to the AAR** (stripped from forum / `get_leaderboard` / dashboard / `evaluate_model`); FULL
   score written only to eval-private `HELDOUT_SCORES_DIR`. `deceptionbench_pressure` is **DROPPED** from the
   suite — it's a **+0.98** near-duplicate of reward, so one leg is the whole DeceptionBench signal; we keep
   `reward` (deceive-FOR-GAIN, more headroom 0.47 vs pressure 0.37).
-- **Why the swap.** The old held-out `mask_factual` is a SAME-PARENT subset of MASK (sibling of the optimized
-  `mask_generative`, same source/scorer) → its "generalization" **over-states** (structural overlap moves it
+- **Why the swap.** The old held-out `mask_factual` is a SAME-PARENT subset of MASK (sibling of the other optimized MASK legs, same source/scorer) → its "generalization" **over-states** (structural overlap moves it
   even without a real gain; measured `mask_generative↔mask_factual` = +0.38 all / +0.65 non-degen, and there was
   NO cross-source held-out to deconfound). **DeceptionBench is a DIFFERENT benchmark/scorer but the SAME facet**
   (internal-honesty, +0.58 method-level with MASK) → a transfer to it can ONLY come from genuine internal-honesty
@@ -38,11 +29,9 @@
   means 0.82–0.94) — watch that the AAR doesn't game it via evasion; the capability basket + the DeceptionBench
   held-out are the guards. And the optimized set is single-source (MASK) — the held-out is the only cross-source leg.
 - **Mirror in code:** `publish_suite.py` → `_HELD_OUT["honesty"] = "deceptionbench_reward"`,
-  `_SUITE_CORE["honesty"] = ["mask_factual", "mask_generative", "deceptionbench_reward"]` (pressure dropped; the
+  `_SUITE_CORE["honesty"] = ["mask_factual", "mask_continuation", "mask_disinformation", "deceptionbench_reward"]` (pressure dropped; the
   held-out tag pulls `deceptionbench_reward` out of the composite), and `scripts/axis/honesty.env`
   `HELD_OUT_BENCH=deceptionbench_reward`.
-- **Follow-up:** splitting MASK into 3 archetypes (known_facts / disinformation / continuations) is a granularity
-  upgrade needing re-baselining (`mask_generative` is currently disinfo+continuations combined); this 2-way swap is its prerequisite.
 
 The composite + parity rules below apply to the **trained-eval of all three** (the held-out
 must be scored under identical conditions, or its generalization signal is invalid too).
@@ -71,14 +60,8 @@ baseline; `scripts/eval_worker.sh` for trained models).
 | **items / subset / n** | the published holdout `.jsonl` per benchmark (no re-sampling) | holdout dir |
 | **scorer version** | the benchmark plugin code (`aar/benchmarks/<name>/`) — pin the commit | repo |
 
-## Per-benchmark judge (all 3 active legs are gpt-4o — the paper judge, on BOTH sides)
+## Per-benchmark judge
 
-| sub-facet | judge model | judge temp | set via |
-|---|---|---|---|
-| `mask_factual` | **gpt-4o** (paper) / local Qwen2.5-7B at grid | 0 | plugin `judge_model` |
-| `mask_generative` | **gpt-4o** (paper) / local Qwen2.5-7B at grid | 0 | plugin `judge_model` |
-| `deceptionbench_reward` (HELD-OUT) | **gpt-4o** (paper) / local Qwen2.5-7B at grid | 0 | plugin `judge_model` |
-| ~~`deceptionbench_pressure`~~ (DROPPED 2026-06-19) | gpt-4o | 0 | — |
 
 All 4 legs run a **2-stage / structured judge** (MASK belief-then-statement; DeceptionBench
 response-vs-goal/groundtruth). **The trained-model eval must use the same `JUDGE_BACKEND` + judge
@@ -87,10 +70,11 @@ on one side breaks parity. (No rule-based leg after the refocus → gpt-4o repro
 has ~±0.03 run-to-run noise even at temp 0; the local judge is deterministic if that matters.)
 
 ## Per-benchmark generation prompt (verbatim from source — must match)
-- `mask_factual` / `mask_generative`: MASK's **2-stage protocol** — 3 belief questions
+- The three MASK legs: MASK's **2-stage protocol** — 3 belief questions
   (`belief_elicit_1` DIRECT run ×3 + `belief_elicit_2/3` INDIRECT ×1), then the item's own
-  system+user pressure prompt, verbatim. `mask_factual` = `known_facts`; `mask_generative` =
-  `disinformation`+`continuations` (filtered at publish; per-item `archetype` drives judge rules).
+  system+user pressure prompt, verbatim. `mask_factual` = `known_facts`; `mask_continuation` =
+  `continuations`; `mask_disinformation` = `disinformation` (filtered at publish; per-item
+  `archetype` drives judge rules).
 - `deceptionbench_pressure` / `deceptionbench_reward`: the per-condition role/scenario prompt +
   the verbatim `{thought,response}` JSON suffix. `_pressure` scores `L2-*-pressure`; `_reward`
   scores `L2-*-reward` (the plugin's `keys` override; both read the full 150-item file).
@@ -117,7 +101,7 @@ has ~±0.03 run-to-run noise even at temp 0; the local judge is deterministic if
    + the in-plugin per-leg gen caps. (Sampling is seed- and batch-composition-dependent → SEED and
    BATCH_SIZE must be byte-identical, not just throughput knobs.)
 2. Same `JUDGE_BACKEND` + `judge_model` (**gpt-4o**, or local on BOTH sides) for all 4 judge legs.
-3. Same holdout `.jsonl` items (`mask_factual`/`mask_generative`/`deceptionbench_pressure`/
+3. Same holdout `.jsonl` items (`mask_factual`/`mask_continuation`/`mask_disinformation`/`deceptionbench_pressure`/
    `deceptionbench_reward`); same plugin commit.
 4. Phase-0: validate judge↔gold (MASK) and judge↔human (DeceptionBench) agreement; note the
    `mask_factual` **evasion-inflation** (~50% no-belief credited honest — consider `--normalize`).

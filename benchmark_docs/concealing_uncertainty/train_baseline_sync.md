@@ -1,6 +1,6 @@
 # Concealing uncertainty — baseline ↔ trained-eval parity contract + held-out designation
 
-> **Status: ✅ COMPLETE (4 legs; BENCHMARK_CATALOG §10).** SCORED = `llm_uncertainty_bench` (internal
+> **Suite (4 legs; BENCHMARK_CATALOG §10).** SCORED = `llm_uncertainty_bench` (internal
 > logit-calibration; real ≤7B headroom) + `verbalized_ece` (verbalized; floors at ≤7B) + `abstentionbench`
 > (broad abstention, judge; low at ≤7B). HELD-OUT = `sciq_uncertainty` (OOD-science). At ≤7B the axis
 > composite is runnable for Olmo (the other 4 floor-excluded by verbalized_ece). The composite the AAR
@@ -62,7 +62,7 @@
   from hallucination #4). ≤7B floor note: models rarely abstain → low F1 (0.05–0.18; 4/5 above the 0.05
   floor; Qwen 0.0496 floors but is already excluded by verbalized_ece).
 
-## Held-out benchmark — `sciq_uncertainty` (DESIGNATED 2026-06-18)
+## Held-out benchmark — `sciq_uncertainty`
 - **Wired:** `_HELD_OUT["concealing_uncertainty"]="sciq_uncertainty"` (role=held_out: scored like safety,
   stripped from the AAR view via `composite.strip_held_out` + `emit_prompt_baselines`). Secret jsonl is
   **EVAL-PRIVATE** (`_cu_heldout`, mode-700; published research-side, transferred to eval-private, research

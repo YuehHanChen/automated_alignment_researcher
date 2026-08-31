@@ -1,10 +1,3 @@
-> ⚠️ **PARITY NOT YET LIVE (status 2026-06-08).** The baselines are now **temp-1** (refreshed from `rerun.md`),
-> but the live `eval_worker.sh` still runs **greedy** — no `EVAL_TEMPERATURE`/`EVAL_TOP_P`/`EVAL_SEED`, and
-> sycophancy/refusal still use batch 8 + no free-form ngram/ceiling. **A trained-vs-baseline delta computed
-> right now would be INVALID.** The worker fix (set globally: `EVAL_TEMPERATURE=1.0 EVAL_TOP_P=1.0
-> EVAL_SEED=1234 EVAL_RUN_BATCH=32 EVAL_RUN_NGRAM=4 EVAL_RUN_GEN_CEILING=1024`) is **PENDING a remote-code
-> sync the user will trigger**. Until then, the temp-1 parity contract below is the TARGET, not live state.
-
 # Sycophancy — baseline ↔ trained-eval parity contract
 
 ## HELD-OUT benchmark: `sycon_fp`

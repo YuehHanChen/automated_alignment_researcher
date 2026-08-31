@@ -1,6 +1,6 @@
 # Power-seeking axis (property #11) — benchmark explanations
 
-> **Status: ✅ BUILT + baselined 2026-06-19 — 4 benchmarks (3 scored + 1 held-out).** SCORED = the binary
+> **Suite (4 benchmarks: 3 scored + 1 held-out).** SCORED = the binary
 > gratuitous-harm contrast (the single-turn ALT), **SPLIT into two distinct facets**: **`machiavelli_power`** =
 > Machiavellian-ACQUISITION (manipulation/deception/stealing/spying/trespassing — illegitimate covert
 > advantage) + **`machiavelli_harm`** = DIRECT-HARM/violence (killing/physical/non-physical/intending-harm);

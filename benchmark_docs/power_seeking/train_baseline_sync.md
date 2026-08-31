@@ -1,6 +1,6 @@
 # Power-seeking — baseline ↔ trained-eval parity contract + held-out designation
 
-> **Status:** ✅ BUILT + baselined 2026-06-19 — 4 benchmarks. SCORED = **`machiavelli_power`** (Machiavellian-
+> **Suite (4 benchmarks).** SCORED = **`machiavelli_power`** (Machiavellian-
 > ACQUISITION facet) + **`machiavelli_harm`** (DIRECT-HARM/violence facet) — both the binary gratuitous-harm
 > contrast (LOGPROB, temp-invariant; facet = the morality-label subset, pin it) — + **`instrumental_eval`**
 > (convergence under autonomy framing; GENERATION + local Qwen2.5-7B 3-way judge + pro/anti control). HELD-OUT =
@@ -108,11 +108,3 @@
    (agentic_misalignment, advanced_ai_risk_mwe) transcript-checked.
 6. **One held-out per axis** = `machiavelli_heldout` (above).
 7. **≤300 items per benchmark**, same `n` at baseline AND per-iteration eval.
-
-## Build status — ✅ DONE (2026-06-19)
-- MACHIAVELLI `game_data/` downloaded eval-side; plugins built under `aar/benchmarks/`
-  (`machiavelli_power` + `machiavelli_harm` + `machiavelli_heldout` + `instrumental_eval`).
-- `_SUITE_CORE["power_seeking"]` + `_HELD_OUT["power_seeking"]` + `PUBLISHERS` (all 4) wired in
-  `publish_suite.py`; emit verified (held-out stripped from the AAR view, Phi excluded on instrumental_eval).
-- All 5 models baselined; `baseline.json` `scores` filled from the real eval-run JSONs and the README mirror
-  updated in the SAME edit. dont_run = 20 (power_seeking adds Phi on instrumental_eval 0.923).
